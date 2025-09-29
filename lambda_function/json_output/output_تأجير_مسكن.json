@@ -1,0 +1,11 @@
+{
+  "response": {
+    "statusCode": 500,
+    "body": "{\"success\": false, \"error\": \"'list' object has no attribute 'get'\", \"agent_type\": \"rag_processor\"}"
+  },
+  "parsed_body": {
+    "success": false,
+    "error": "'list' object has no attribute 'get'",
+    "agent_type": "rag_processor"
+  }
+}

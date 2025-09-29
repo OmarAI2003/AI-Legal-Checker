@@ -89,7 +89,7 @@ git remote add upstream https://github.com/activist-org/AI-Legal-Checker
 
    # After activating venv:
    pip install --upgrade pip
-   pip install -r requirements-dev.txt
+   pip install -r requirements.txt   
 
    # To install the AI-Legal-Checker for local development:
    pip install -e .

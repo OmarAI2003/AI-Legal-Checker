@@ -1,0 +1,23 @@
+{
+    "extracted_clauses": [
+        {
+            "clause_id": "رقم البند",
+            "clause_title": "عنوان البند",
+            "clause_text": "نص البند كاملاً",
+            "clause_type": "نوع البند (راتب، ساعات_عمل، مدة_عقد، إنهاء، التزامات)",
+            "importance": "درجة الأهمية (عالية، متوسطة، منخفضة)",
+            "parties_mentioned": ["الأطراف المذكورة في البند"]
+        }
+    ],
+    "document_metadata": {
+        "contract_type": "نوع العقد",
+        "parties": ["أسماء الأطراف"],
+        "contract_date": "تاريخ العقد",
+        "total_clauses": "عدد البنود الإجمالي"
+    },
+    "processing_info": {
+        "ocr_confidence": "مستوى الثقة (عالية، متوسطة، منخفضة)",
+        "document_quality": "جودة الوثيقة",
+        "language_detected": "اللغة المكتشفة"
+    }
+}

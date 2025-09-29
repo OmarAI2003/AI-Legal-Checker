@@ -1,0 +1,15 @@
+# MARK: System files
+ 
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea/
+/target
+
+# Caches
+__pycache__
+# Test coverage output
+.coverage
+# Virtual environment
+venv
+.venv

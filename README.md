@@ -9,7 +9,7 @@
 ## **Contents**
 
 - [Overview `⇧`](#overview-)
-- [Key Features `⇧`](#key-features-)
+- [Features `⇧`](#key-features-)
 - [Architecture `⇧`](#architecture-)
 - [Deployment `⇧`](#deployment-)
 - [Environment setup `⇧`](#environment-setup-)
@@ -22,18 +22,6 @@
 
 An advanced AI-powered system that analyzes Egyptian legal contracts using AWS services. It provides comprehensive legal analysis, compliance checking, and risk assessment for Arabic legal documents.
 
-## 🏗️ Architecture [`⇧`](#contents)
-
-![Architecture Diagram](architecture_diagram.png)
-
-### System Components
-
-- **Frontend**: Static web application hosted on S3 
-- **API Layer**: AWS API Gateway with Lambda function integration
-- **AI Processing**: AWS Bedrock AgentCore with specialized agents
-- **OCR Service**: Separate Lambda function for image-to-text conversion using Claude Vision
-- **Knowledge Base**: RAG-enhanced system with Egyptian legal document corpus
-
 ## 🌟Features [`⇧`](#contents)
 
 
@@ -42,6 +30,56 @@ An advanced AI-powered system that analyzes Egyptian legal contracts using AWS s
 3. **⚖️ Egyptian Law Compliance**: Automated checking against Egyptian legal requirements
 4. **🌐 Bilingual Support**: Analysis and reports in both Arabic and English
 5. **⚡ Real-time Processing**: Fast analysis with cloud-native architecture
+![Architecture Diagram](ui.png)
+
+
+## 🏗️ Architecture [`⇧`](#contents)
+
+![Architecture Diagram](architecture.png)
+
+This system processes user-submitted documents through a sophisticated pipeline that combines OCR, AI analysis, and knowledge management.
+
+### Request Flow
+
+1. **User Interaction**: Users submit requests through Amazon CloudFront (CDN for global content delivery)
+2. **Static Content**: The S3 Static Website Bucket hosts the web interface
+3. **API Gateway**: Amazon API Gateway handles incoming API requests and routes them appropriately
+4. **Processing Trigger**: An Orchestration Lambda Function coordinates the document processing workflow
+
+### Document Processing Pipeline
+
+The **OCR Lambda Function** performs optical character recognition on uploaded documents, extracting text from images or scanned PDFs. This processed text is then passed to the core analysis engine.
+
+### AgentCore Runtime
+
+The heart of the system is the **AgentCore Runtime**, which contains two specialized AI agents:
+
+* **Contract Explanation Agent**: Analyzes and explains contract terms and clauses
+* **Contract Assessment Agent**: Evaluates contracts for risks, obligations, and key provisions
+
+These agents leverage **Amazon Bedrock** (AWS's managed foundation model service) to perform sophisticated natural language understanding and generation tasks.
+
+### Knowledge Management
+
+The system incorporates:
+
+* **Amazon Bedrock Knowledge Base**: Provides domain-specific knowledge and context
+* **S3 Knowledge Base Data Source**: Stores reference documents and training data
+* **Guardrails**: Ensures AI responses comply with defined safety and accuracy parameters
+
+### Memory System
+
+The **AgentCore Memory** component maintains context and conversation history, enabling more coherent multi-turn interactions.
+
+### Key AWS Services Used
+
+* **Amazon CloudFront**: Content delivery network
+* **S3**: Object storage for static website and knowledge base
+* **API Gateway**: RESTful API management
+* **Lambda Functions**: Serverless compute for OCR and orchestration
+* **Amazon Bedrock**: Managed AI/ML foundation models
+* **Guardrails**: AI safety and compliance controls
+
 
 ### Contract Analysis Modes
 - **Explanation Mode**: Detailed contract breakdown and explanation

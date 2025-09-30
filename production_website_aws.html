@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحليل العقود القانونية المصرية - نظام ذكي</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'arabic': ['Noto Sans Arabic', 'Arial', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans Arabic', Arial, sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .agent-card { transition: all 0.3s ease; }
+        .agent-card:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold">🏛️ تحليل العقود القانونية المصرية</h1>
+                    <p class="text-blue-100 mt-2">نظام ذكي مدعوم بالذكاء الاصطناعي لتحليل العقود وتقييم المخاطر</p>
+                </div>
+                <div class="text-right">
+                    <div class="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2">
+                        <div class="text-sm">الحالة: <span id="systemStatus" class="font-semibold">🔄 جارٍ التحقق...</span></div>
+                        <div class="text-xs mt-1" id="agentStatus">الوكلاء: جارٍ التحقق...</div>
+                    </div>
+                        <div class="text-xs mt-1" id="agentStatus">الوكلاء: غير محدد</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container mx-auto px-6 py-8 max-w-6xl">
+        
+        <!-- Agent Selection -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">🤖 اختر نوع التحليل المطلوب</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Explanation Agent -->
+                <div class="agent-card bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-lg p-6 cursor-pointer" onclick="selectAgent('explanation')">
+                    <div class="text-center">
+                        <div class="text-4xl mb-4">�</div>
+                        <h3 class="text-xl font-bold text-blue-800 mb-3">شرح العقود</h3>
+                        <p class="text-blue-700 text-sm mb-4">يقوم بشرح بنود العقد بطريقة مفهومة وتوضيح الحقوق والواجبات مع إمكانية المحادثة والأسئلة</p>
+                        <div class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-xs">واجهة محادثة</div>
+                    </div>
+                </div>
+
+                <!-- Assessment Agent -->
+                <div class="agent-card bg-gradient-to-br from-yellow-50 to-yellow-100 border-2 border-yellow-200 rounded-lg p-6 cursor-pointer" onclick="selectAgent('assessment')">
+                    <div class="text-center">
+                        <div class="text-4xl mb-4">📊</div>
+                        <h3 class="text-xl font-bold text-yellow-800 mb-3">تقييم وتوصيات</h3>
+                        <p class="text-yellow-700 text-sm mb-4">يحلل المخاطر المحتملة في العقد ويقدم تقييماً شاملاً مع توصيات للتحسين وحماية الأطراف</p>
+                        <div class="bg-yellow-200 text-yellow-800 px-3 py-1 rounded-full text-xs">تقييم وتوصيات</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">اختر نوع التحليل المطلوب من الخيارات أعلاه</p>
+                <div id="selectedAgentDisplay" class="mt-2 text-lg font-semibold text-blue-600"></div>
+            </div>
+        </div>
+
+        <!-- Image Upload Section -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">📸 رفع صورة العقد</h2>
+            <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center" id="dropZone">
+                <div class="mb-4">
+                    <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <div class="mt-4">
+                        <p class="text-lg text-gray-600">📄 اسحب وأفلت صورة العقد هنا</p>
+                        <p class="text-sm text-gray-500 mt-2">أو انقر لاختيار ملف من جهازك</p>
+                        <p class="text-xs text-gray-400 mt-1">الصيغ المدعومة: JPG, PNG, PDF | الحد الأقصى: 10MB</p>
+                    </div>
+                    <input type="file" id="imageInput" accept="image/*,.pdf" class="hidden" onchange="handleImageUpload(event)">
+                    <button onclick="document.getElementById('imageInput').click()" class="mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg transition duration-200">
+                        🗂️ اختيار ملف
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Image Preview -->
+            <div id="imagePreview" class="hidden mt-6">
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-gray-700">📷 معاينة الصورة</h3>
+                        <button onclick="clearImage()" class="text-red-600 hover:text-red-800 font-medium">
+                            ❌ إزالة
+                        </button>
+                    </div>
+                    <div class="flex flex-col lg:flex-row gap-4">
+                        <div class="lg:w-1/2">
+                            <img id="previewImage" class="w-full h-64 object-contain border rounded-lg bg-white" alt="معاينة العقد">
+                        </div>
+                        <div class="lg:w-1/2">
+                            <div class="bg-white rounded-lg p-4 h-64 flex items-center justify-center">
+                                <button onclick="processImage()" id="processBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200 text-lg">
+                                    🔄 استخراج النص ومعالجته
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- OCR Progress -->
+            <div id="ocrProgress" class="hidden mt-6">
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <div class="flex items-center">
+                        <div class="loading-spinner mr-4"></div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-blue-800">🔄 جارٍ معالجة الصورة...</h3>
+                            <p class="text-blue-600 text-sm mt-1" id="ocrStatus">رفع الصورة واستخراج النص</p>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="bg-blue-200 rounded-full h-2">
+                            <div id="ocrProgressBar" class="bg-blue-600 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contract Input -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">📝 إدخال نص العقد</h2>
+            <textarea id="contractText" class="w-full h-64 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none" placeholder="الرجاء إدخال نص العقد هنا...
+
+مثال:
+عقد عمل بين شركة النيل للتكنولوجيا المحدودة (الطرف الأول) والسيد أحمد محمد علي حسن (الطرف الثاني) بوظيفة مهندس برمجيات أول براتب شهري قدره 18000 جنيه مصري..."></textarea>
+            <div class="mt-4 flex justify-between items-center">
+                <div class="text-sm text-gray-500" id="charCount">0 حرف</div>
+                <button onclick="analyzeContract()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition duration-200 disabled:opacity-50" id="analyzeBtn">
+                    🔍 تحليل العقد
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <div id="loadingDiv" class="hidden bg-white rounded-lg shadow-lg p-8 mb-8">
+            <div class="text-center">
+                <div class="loading-spinner mx-auto mb-4"></div>
+                <h3 class="text-xl font-semibold text-gray-700">جارٍ تحليل العقد...</h3>
+                <p class="text-gray-500 mt-2">يرجى الانتظار، قد تستغرق العملية دقيقة أو أكثر</p>
+                <div class="mt-4">
+                    <div class="bg-gray-200 rounded-full h-2">
+                        <div class="bg-blue-600 h-2 rounded-full animate-pulse" style="width: 60%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div id="results" class="hidden bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">📊 نتائج التحليل</h2>
+            <div id="resultsContent"></div>
+        </div>
+
+        <!-- Chat with Explanation Agent -->
+        <div id="chatSection" class="hidden bg-white rounded-lg shadow-lg p-6 mt-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">💬 اسأل الوكيل عن العقد</h2>
+            <div class="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <p class="text-blue-800 text-sm">
+                    <strong>💡 أمثلة للأسئلة التي يمكنك طرحها:</strong><br>
+                    • ما معنى البند الخاص بالراتب؟<br>
+                    • اشرح لي التزامات الطرفين<br>
+                    • ما هي حقوقي كموظف؟<br>
+                    • ما معنى العقد الدائم؟
+                </p>
+            </div>
+            
+            <!-- Chat Messages -->
+            <div id="chatMessages" class="bg-gray-50 border rounded-lg p-4 mb-4 max-h-96 overflow-y-auto">
+                <div class="text-center text-gray-500 text-sm">
+                    اطرح سؤالك عن العقد وسيجيبك الوكيل بالتفصيل...
+                </div>
+            </div>
+            
+            <!-- Chat Input -->
+            <div class="flex gap-3">
+                <input type="text" id="chatInput" placeholder="اكتب سؤالك هنا..." 
+                       class="flex-1 p-3 border border-gray-300 rounded-lg text-right"
+                       onkeypress="if(event.key==='Enter') askQuestion()">
+                <button onclick="askQuestion()" id="askButton"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition duration-200">
+                    ❓ اسأل
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-6 text-center">
+            <h3 class="text-lg font-semibold mb-2">🏛️ نظام تحليل العقود القانونية المصرية</h3>
+            <p class="text-gray-400 text-sm">مدعوم بالذكاء الاصطناعي | AWS Bedrock | AgentCore</p>
+            <div class="mt-4 text-xs text-gray-500">
+                <p>تطوير: نظام ذكي لتحليل العقود القانونية باللغة العربية</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Production API endpoint
+        const API_BASE_URL = 'https://820uxym01d.execute-api.us-west-2.amazonaws.com/prod';
+        
+        let selectedAnalysisType = '';
+        
+        // Character count
+        document.getElementById('contractText').addEventListener('input', function() {
+            const count = this.value.length;
+            document.getElementById('charCount').textContent = count + ' حرف';
+        });
+        
+        // System status check
+        async function checkSystemStatus() {
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+                
+                const response = await fetch(`${API_BASE_URL}/health`, {
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+                
+                const data = await response.json();
+                
+                if (data.status === 'healthy') {
+                    document.getElementById('systemStatus').innerHTML = '✅ متصل';
+                    document.getElementById('agentStatus').innerHTML = 'الوكلاء: جاهزة للعمل';
+                } else {
+                    document.getElementById('systemStatus').innerHTML = '⚠️ متاح جزئياً';
+                    document.getElementById('agentStatus').innerHTML = 'الوكلاء: محدودة';
+                }
+            } catch (error) {
+                console.log('Status check failed:', error.message);
+                document.getElementById('systemStatus').innerHTML = '❌ غير متصل';
+                document.getElementById('agentStatus').innerHTML = 'الوكلاء: غير متاحة';
+            }
+        }
+        
+        // Image upload and OCR functions
+        let selectedImageFile = null;
+        
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            // Validate file size (10MB limit)
+            if (file.size > 10 * 1024 * 1024) {
+                alert('حجم الملف كبير جداً. الحد الأقصى 10 ميجابايت');
+                return;
+            }
+            
+            // Validate file type
+            const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+            if (!validTypes.includes(file.type)) {
+                alert('نوع الملف غير مدعوم. يرجى رفع صورة JPG أو PNG أو ملف PDF');
+                return;
+            }
+            
+            selectedImageFile = file;
+            
+            // Show preview
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('previewImage').src = e.target.result;
+                document.getElementById('imagePreview').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function clearImage() {
+            selectedImageFile = null;
+            document.getElementById('imageInput').value = '';
+            document.getElementById('imagePreview').classList.add('hidden');
+            document.getElementById('ocrProgress').classList.add('hidden');
+        }
+        
+        async function processImage() {
+            if (!selectedImageFile) {
+                alert('الرجاء اختيار صورة أولاً');
+                return;
+            }
+            
+            if (!selectedAnalysisType) {
+                alert('الرجاء اختيار نوع التحليل أولاً من الأعلى');
+                return;
+            }
+            
+            // Show progress
+            document.getElementById('ocrProgress').classList.remove('hidden');
+            document.getElementById('processBtn').disabled = true;
+            
+            // Update progress
+            updateOCRProgress(10, 'تحويل الصورة إلى Base64...');
+            
+            try {
+                // Convert image to base64
+                const base64Data = await fileToBase64(selectedImageFile);
+                updateOCRProgress(30, 'رفع الصورة للمعالجة...');
+                
+                // Prepare request payload using the analysis type selected at the top
+                const payload = {
+                    image_data: base64Data,
+                    auto_analyze: true,  // Always auto-analyze since type is selected
+                    analysis_type: selectedAnalysisType  // Use the selected type from top
+                };
+                
+                updateOCRProgress(50, 'استخراج النص من الصورة...');
+                
+                // Call OCR API with timeout and better error handling
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 second timeout
+                
+                const response = await fetch(`${API_BASE_URL}/api/ocr`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload),
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeoutId);
+                updateOCRProgress(80, 'معالجة النتائج...');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    updateOCRProgress(100, 'تم الانتهاء بنجاح!');
+                    
+                    // Set extracted text in the textarea
+                    document.getElementById('contractText').value = result.extracted_text;
+                    document.getElementById('charCount').textContent = result.extracted_text.length + ' حرف';
+                    
+                    // Show success message
+                    showOCRSuccess(result);
+                    
+                    // If auto-analysis was performed, show results
+                    if (result.analysis) {
+                        displayAnalysisResults(result.analysis);
+                    }
+                    
+                    // Hide progress after 2 seconds
+                    setTimeout(() => {
+                        document.getElementById('ocrProgress').classList.add('hidden');
+                    }, 2000);
+                    
+                } else {
+                    throw new Error(result.error || 'فشل في معالجة الصورة');
+                }
+                
+            } catch (error) {
+                console.error('OCR Error:', error);
+                
+                let errorMessage = 'فشل في معالجة الصورة';
+                
+                if (error.name === 'AbortError') {
+                    errorMessage = 'انتهت مهلة المعالجة. يرجى المحاولة مرة أخرى';
+                } else if (error.message.includes('Failed to fetch')) {
+                    errorMessage = 'خطأ في الاتصال بالخادم. تحقق من الاتصال بالإنترنت';
+                } else if (error.message.includes('HTTP')) {
+                    errorMessage = `خطأ في الخادم: ${error.message}`;
+                } else {
+                    errorMessage = error.message || errorMessage;
+                }
+                
+                updateOCRProgress(0, `خطأ: ${errorMessage}`);
+                alert(errorMessage);
+                
+                setTimeout(() => {
+                    document.getElementById('ocrProgress').classList.add('hidden');
+                }, 3000);
+            } finally {
+                document.getElementById('processBtn').disabled = false;
+            }
+        }
+        
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+        
+        function updateOCRProgress(percentage, status) {
+            document.getElementById('ocrProgressBar').style.width = percentage + '%';
+            document.getElementById('ocrStatus').textContent = status;
+        }
+        
+        function showOCRSuccess(result) {
+            // Create a success notification
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 bg-green-600 text-white p-4 rounded-lg shadow-lg z-50';
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <span class="text-xl mr-2">✅</span>
+                    <div>
+                        <h4 class="font-bold">تم استخراج النص بنجاح!</h4>
+                        <p class="text-sm">استُخرج ${result.extracted_text.length} حرف من الصورة</p>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remove after 5 seconds
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+        
+        function displayAnalysisResults(analysisResult) {
+            // This function will handle displaying analysis results from OCR
+            if (analysisResult.success) {
+                const resultsContent = document.getElementById('resultsContent');
+                displayStructuredAnalysis(analysisResult.result, {
+                    analysis_type: analysisResult.analysis_type,
+                    source: 'ocr_image'
+                });
+                document.getElementById('results').classList.remove('hidden');
+            }
+        }
+        
+        // Drag and drop functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropZone = document.getElementById('dropZone');
+            
+            dropZone.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                dropZone.classList.add('border-blue-500', 'bg-blue-50');
+            });
+            
+            dropZone.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                dropZone.classList.remove('border-blue-500', 'bg-blue-50');
+            });
+            
+            dropZone.addEventListener('drop', function(e) {
+                e.preventDefault();
+                dropZone.classList.remove('border-blue-500', 'bg-blue-50');
+                
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    document.getElementById('imageInput').files = files;
+                    handleImageUpload({target: {files: files}});
+                }
+            });
+        });
+        
+        // Agent selection
+        function selectAgent(type) {
+            selectedAnalysisType = type;
+            
+            // Reset all cards
+            document.querySelectorAll('.agent-card').forEach(card => {
+                card.classList.remove('ring-4', 'ring-blue-500', 'ring-yellow-500', 'ring-green-500');
+            });
+            
+            // Highlight selected card
+            const selectedCard = event.currentTarget;
+            if (type === 'explanation') {
+                selectedCard.classList.add('ring-4', 'ring-blue-500');
+                document.getElementById('selectedAgentDisplay').textContent = '✅ تم اختيار: شرح العقود';
+            } else if (type === 'assessment') {
+                selectedCard.classList.add('ring-4', 'ring-yellow-500');
+                document.getElementById('selectedAgentDisplay').textContent = '✅ تم اختيار: تقييم وتوصيات';
+            }
+        }
+        
+        // Contract analysis
+        async function analyzeContract() {
+            const contractText = document.getElementById('contractText').value.trim();
+            const loadingDiv = document.getElementById('loadingDiv');
+            const results = document.getElementById('results');
+            const resultsContent = document.getElementById('resultsContent');
+            
+            // Store data for chat functionality
+            currentContractText = contractText;
+            currentUserId = 'web_user_' + Date.now();
+            
+            if (!selectedAnalysisType) {
+                alert('الرجاء اختيار نوع التحليل أولاً');
+                return;
+            }
+            
+            if (!contractText) {
+                alert('الرجاء إدخال نص العقد');
+                return;
+            }
+            
+            // Show loading
+            loadingDiv.classList.remove('hidden');
+            results.classList.add('hidden');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/analyze`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        analysis_type: selectedAnalysisType,
+                        contract_text: contractText,
+                        user_id: 'web_user_' + Date.now()
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Store session data for chat
+                    currentSessionId = result.session_id;
+                    
+                    // Parse the actual analysis content from the agent response
+                    let analysisData;
+                    try {
+                        // The Lambda function now returns clean structured data in result.result
+                        analysisData = result.result;
+                    } catch (parseError) {
+                        console.error('Failed to parse analysis data:', parseError);
+                        analysisData = { error: 'فشل في تحليل البيانات المُستلمة من الوكيل' };
+                    }
+                    
+                    displayStructuredAnalysis(analysisData, {
+                        agent_name: 'الوكيل المحدد',
+                        analysis_type: result.analysis_type,
+                        session_id: result.session_id
+                    });
+                    results.classList.remove('hidden');
+                } else {
+                    resultsContent.innerHTML = `
+                        <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                            <h4 class="font-bold text-red-800">❌ خطأ في التحليل</h4>
+                            <p class="mt-2">${result.error || 'حدث خطأ غير متوقع'}</p>
+                        </div>
+                    `;
+                    results.classList.remove('hidden');
+                }
+                
+            } catch (error) {
+                resultsContent.innerHTML = `
+                    <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                        <h4 class="font-bold text-red-800">❌ خطأ في الاتصال</h4>
+                        <p class="mt-2">تعذر الاتصال بالخدمة. يرجى المحاولة مرة أخرى.</p>
+                        <p class="text-sm mt-1">تفاصيل الخطأ: ${error.message}</p>
+                    </div>
+                `;
+                results.classList.remove('hidden');
+            } finally {
+                loadingDiv.classList.add('hidden');
+            }
+        }
+        
+        // Display structured analysis
+        function displayStructuredAnalysis(data, metadata = {}) {
+            const resultsContent = document.getElementById('resultsContent');
+            
+            // Check if there's an error in the analysis data
+            if (data.error) {
+                resultsContent.innerHTML = `
+                    <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                        <h4 class="font-bold text-red-800">❌ خطأ في تحليل البيانات</h4>
+                        <p class="mt-2">${data.error}</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = ``;
+            
+            // Contract Summary
+            if (data.contract_summary) {
+                html += `
+                    <div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                        <h4 class="font-bold text-green-800">📋 ملخص العقد</h4>
+                        <p class="mt-2 text-green-700">${data.contract_summary}</p>
+                    </div>
+                `;
+            }
+            
+            // Contract Type
+            if (data.contract_type) {
+                const contractType = typeof data.contract_type === 'string' ? data.contract_type : 
+                                   typeof data.contract_type === 'object' ? JSON.stringify(data.contract_type) :
+                                   String(data.contract_type);
+                html += `
+                    <div class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <h4 class="font-bold text-blue-800">📄 نوع العقد</h4>
+                        <p class="mt-2 text-blue-700">${contractType}</p>
+                    </div>
+                `;
+            }
+            
+            // Main Parties
+            if (data.main_parties) {
+                html += `
+                    <div class="mb-6 p-4 bg-purple-50 border border-purple-200 rounded-lg">
+                        <h4 class="font-bold text-purple-800">👥 أطراف العقد</h4>
+                        <div class="mt-2 text-purple-700">
+                `;
+                Object.entries(data.main_parties).forEach(([key, value]) => {
+                    const arabicKey = key === 'employer' ? 'صاحب العمل' : 
+                                     key === 'employee' ? 'الموظف' : 
+                                     key === 'party1' ? 'الطرف الأول' : 
+                                     key === 'party2' ? 'الطرف الثاني' :
+                                     key === 'seller' ? 'البائع' :
+                                     key === 'buyer' ? 'المشتري' :
+                                     key === 'landlord' ? 'المؤجر' :
+                                     key === 'tenant' ? 'المستأجر' :
+                                     key === 'client' ? 'العميل' :
+                                     key === 'service_provider' ? 'مقدم الخدمة' :
+                                     key === 'contractor' ? 'المقاول' :
+                                     key === 'company' ? 'الشركة' : key;
+                    html += `<p><strong>${arabicKey}:</strong> ${value}</p>`;
+                });
+                html += `
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Key Rights
+            if (data.key_rights) {
+                html += `
+                    <div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                        <h4 class="font-bold text-green-800">✅ الحقوق الأساسية</h4>
+                        <div class="mt-2">
+                `;
+                Object.entries(data.key_rights).forEach(([party, rights]) => {
+                    const arabicParty = party === 'employer' ? 'صاحب العمل' : 
+                                       party === 'employee' ? 'الموظف' : 
+                                       party === 'party1' ? 'الطرف الأول' : 
+                                       party === 'party2' ? 'الطرف الثاني' :
+                                       party === 'seller' ? 'البائع' :
+                                       party === 'buyer' ? 'المشتري' :
+                                       party === 'landlord' ? 'المؤجر' :
+                                       party === 'tenant' ? 'المستأجر' :
+                                       party === 'client' ? 'العميل' :
+                                       party === 'service_provider' ? 'مقدم الخدمة' :
+                                       party === 'contractor' ? 'المقاول' :
+                                       party === 'company' ? 'الشركة' : party;
+                    html += `
+                        <div class="mb-4">
+                            <h5 class="font-semibold text-green-700 mb-2">${arabicParty}:</h5>
+                            <ul class="list-disc list-inside text-green-600 space-y-1">
+                    `;
+                    rights.forEach(right => {
+                        html += `<li>${right}</li>`;
+                    });
+                    html += `
+                            </ul>
+                        </div>
+                    `;
+                });
+                html += `
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Key Obligations
+            if (data.key_obligations) {
+                html += `
+                    <div class="mb-6 p-4 bg-orange-50 border border-orange-200 rounded-lg">
+                        <h4 class="font-bold text-orange-800">📋 الالتزامات الأساسية</h4>
+                        <div class="mt-2">
+                `;
+                Object.entries(data.key_obligations).forEach(([party, obligations]) => {
+                    const arabicParty = party === 'employer' ? 'صاحب العمل' : 
+                                       party === 'employee' ? 'الموظف' : 
+                                       party === 'party1' ? 'الطرف الأول' : 
+                                       party === 'party2' ? 'الطرف الثاني' :
+                                       party === 'seller' ? 'البائع' :
+                                       party === 'buyer' ? 'المشتري' :
+                                       party === 'landlord' ? 'المؤجر' :
+                                       party === 'tenant' ? 'المستأجر' :
+                                       party === 'client' ? 'العميل' :
+                                       party === 'service_provider' ? 'مقدم الخدمة' :
+                                       party === 'contractor' ? 'المقاول' :
+                                       party === 'company' ? 'الشركة' : party;
+                    html += `
+                        <div class="mb-4">
+                            <h5 class="font-semibold text-orange-700 mb-2">${arabicParty}:</h5>
+                            <ul class="list-disc list-inside text-orange-600 space-y-1">
+                    `;
+                    obligations.forEach(obligation => {
+                        html += `<li>${obligation}</li>`;
+                    });
+                    html += `
+                            </ul>
+                        </div>
+                    `;
+                });
+                html += `
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Important Terms
+            if (data.important_terms && data.important_terms.length > 0) {
+                html += `
+                    <div class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <h4 class="font-bold text-blue-800">⭐ البنود المهمة</h4>
+                        <ul class="mt-2 list-disc list-inside text-blue-700 space-y-1">
+                `;
+                data.important_terms.forEach(term => {
+                    html += `<li>${term}</li>`;
+                });
+                html += `
+                        </ul>
+                    </div>
+                `;
+            }
+            
+            // Assessment-specific fields
+            // Overall Score and Grade
+            if (data.overall_score !== undefined || data.contract_grade) {
+                html += `
+                    <div class="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <h4 class="font-bold text-yellow-800">📊 النتيجة الإجمالية</h4>
+                        <div class="mt-2 text-yellow-700">
+                `;
+                if (data.overall_score !== undefined) {
+                    html += `<p><strong>النقاط:</strong> ${data.overall_score}/10</p>`;
+                }
+                if (data.contract_grade) {
+                    html += `<p><strong>التقدير:</strong> ${data.contract_grade}</p>`;
+                }
+                if (data.risk_level) {
+                    html += `<p><strong>مستوى المخاطر:</strong> ${data.risk_level}</p>`;
+                }
+                html += `
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Strengths
+            if (data.strengths && data.strengths.length > 0) {
+                html += `
+                    <div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                        <h4 class="font-bold text-green-800">✅ نقاط القوة</h4>
+                        <ul class="mt-2 list-disc list-inside text-green-700 space-y-1">
+                `;
+                data.strengths.forEach(strength => {
+                    html += `<li>${strength}</li>`;
+                });
+                html += `
+                        </ul>
+                    </div>
+                `;
+            }
+            
+            // Weaknesses
+            if (data.weaknesses && data.weaknesses.length > 0) {
+                html += `
+                    <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                        <h4 class="font-bold text-red-800">⚠️ نقاط الضعف</h4>
+                        <ul class="mt-2 list-disc list-inside text-red-700 space-y-1">
+                `;
+                data.weaknesses.forEach(weakness => {
+                    html += `<li>${weakness}</li>`;
+                });
+                html += `
+                        </ul>
+                    </div>
+                `;
+            }
+            
+            // Legal Compliance
+            if (data.legal_compliance) {
+                html += `
+                    <div class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <h4 class="font-bold text-blue-800">⚖️ الامتثال القانوني</h4>
+                        <div class="mt-2 text-blue-700">
+                `;
+                if (data.legal_compliance.score !== undefined) {
+                    html += `<p><strong>النقاط:</strong> ${data.legal_compliance.score}/10</p>`;
+                }
+                if (data.legal_compliance.notes) {
+                    html += `<p><strong>ملاحظات:</strong> ${data.legal_compliance.notes}</p>`;
+                }
+                html += `
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Financial Risks
+            if (data.financial_risks && data.financial_risks.length > 0) {
+                html += `
+                    <div class="mb-6 p-4 bg-orange-50 border border-orange-200 rounded-lg">
+                        <h4 class="font-bold text-orange-800">💰 المخاطر المالية</h4>
+                        <ul class="mt-2 list-disc list-inside text-orange-700 space-y-1">
+                `;
+                data.financial_risks.forEach(risk => {
+                    html += `<li>${risk}</li>`;
+                });
+                html += `
+                        </ul>
+                    </div>
+                `;
+            }
+            
+            // Legal Risks
+            if (data.legal_risks && data.legal_risks.length > 0) {
+                html += `
+                    <div class="mb-6 p-4 bg-purple-50 border border-purple-200 rounded-lg">
+                        <h4 class="font-bold text-purple-800">⚖️ المخاطر القانونية</h4>
+                        <ul class="mt-2 list-disc list-inside text-purple-700 space-y-1">
+                `;
+                data.legal_risks.forEach(risk => {
+                    html += `<li>${risk}</li>`;
+                });
+                html += `
+                        </ul>
+                    </div>
+                `;
+            }
+            
+            // Recommendations
+            if (data.recommendations && data.recommendations.length > 0) {
+                html += `
+                    <div class="mb-6 p-4 bg-teal-50 border border-teal-200 rounded-lg">
+                        <h4 class="font-bold text-teal-800">💡 التوصيات</h4>
+                        <ul class="mt-2 list-disc list-inside text-teal-700 space-y-1">
+                `;
+                data.recommendations.forEach(rec => {
+                    html += `<li>${rec}</li>`;
+                });
+                html += `
+                        </ul>
+                    </div>
+                `;
+            }
+            
+            // Priority Issues
+            if (data.priority_issues && data.priority_issues.length > 0) {
+                html += `
+                    <div class="mb-6 p-4 bg-pink-50 border border-pink-200 rounded-lg">
+                        <h4 class="font-bold text-pink-800">🚨 القضايا ذات الأولوية</h4>
+                        <ul class="mt-2 list-disc list-inside text-pink-700 space-y-1">
+                `;
+                data.priority_issues.forEach(issue => {
+                    html += `<li>${issue}</li>`;
+                });
+                html += `
+                        </ul>
+                    </div>
+                `;
+            }
+            
+            // Fields that should appear ONLY for assessment agent
+            // Be very strict - only show for explicit assessment type
+            const isAssessmentAnalysis = metadata.analysis_type === 'assessment';
+            
+            // Only show these fields for assessment analysis (NOT for explanation)
+            if (isAssessmentAnalysis) {
+                // Potential Risks
+                if (data.potential_risks && data.potential_risks.length > 0) {
+                    html += `
+                        <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                            <h4 class="font-bold text-red-800">⚠️ المخاطر المحتملة</h4>
+                            <ul class="mt-2 list-disc list-inside text-red-700 space-y-1">
+                    `;
+                    data.potential_risks.forEach(risk => {
+                        html += `<li>${risk}</li>`;
+                    });
+                    html += `
+                            </ul>
+                        </div>
+                    `;
+                }
+                
+                // Overall Assessment
+                if (data.overall_assessment) {
+                    const assessment = typeof data.overall_assessment === 'string' ? data.overall_assessment : 
+                                     typeof data.overall_assessment === 'object' ? JSON.stringify(data.overall_assessment) :
+                                     String(data.overall_assessment);
+                    html += `
+                        <div class="mb-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                            <h4 class="font-bold text-gray-800">📊 التقييم العام</h4>
+                            <p class="mt-2 text-gray-700">${assessment}</p>
+                        </div>
+                    `;
+                }
+                
+                // Memory Recommendations
+                if (data.memory_recommendations && data.memory_recommendations.length > 0) {
+                    html += `
+                        <div class="mb-6 p-4 bg-indigo-50 border border-indigo-200 rounded-lg">
+                            <h4 class="font-bold text-indigo-800">🧠 توصيات الذاكرة المحسنة</h4>
+                            <ul class="mt-2 list-disc list-inside text-indigo-700 space-y-1">
+                    `;
+                    data.memory_recommendations.forEach(rec => {
+                        html += `<li>${rec}</li>`;
+                    });
+                    html += `
+                            </ul>
+                        </div>
+                    `;
+                }
+            }
+            
+            // Memory Context (for explanation agent only - when it's NOT an assessment)
+            if (data.memory_context && !isAssessmentAnalysis) {
+                html += `
+                    <div class="mb-6 p-4 bg-indigo-50 border border-indigo-200 rounded-lg">
+                        <h4 class="font-bold text-indigo-800">🧠 سياق الذاكرة</h4>
+                        <div class="mt-2 text-indigo-700">
+                            ${typeof data.memory_context === 'object' ? 
+                              Object.entries(data.memory_context).map(([key, value]) => 
+                                `<p><strong>${key}:</strong> ${value}</p>`
+                              ).join('') : 
+                              `<p>${data.memory_context}</p>`
+                            }
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Fallback for any other content
+            if (!data.contract_summary && !data.key_rights && !data.key_obligations && 
+                !data.overall_score && !data.strengths && !data.recommendations && 
+                !data.potential_risks && !data.overall_assessment && data.content) {
+                html += `
+                    <div class="mb-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                        <h4 class="font-bold text-gray-800">📄 نتيجة التحليل</h4>
+                        <div class="mt-2 text-gray-700 whitespace-pre-wrap">${data.content}</div>
+                    </div>
+                `;
+            }
+            
+            resultsContent.innerHTML = html;
+            
+            // Show chat section if explanation agent was used
+            if (metadata.analysis_type === 'explanation') {
+                document.getElementById('chatSection').classList.remove('hidden');
+            }
+        }
+        
+        // Global variables for chat
+        let currentContractText = '';
+        let currentSessionId = '';
+        let currentUserId = '';
+        
+        // Chat functionality
+        async function askQuestion() {
+            const questionInput = document.getElementById('chatInput');
+            const question = questionInput.value.trim();
+            const chatMessages = document.getElementById('chatMessages');
+            const askButton = document.getElementById('askButton');
+            
+            if (!question) {
+                alert('الرجاء كتابة سؤال');
+                return;
+            }
+            
+            if (!currentContractText) {
+                alert('الرجاء تحليل العقد أولاً');
+                return;
+            }
+            
+            // Clear input and disable button
+            questionInput.value = '';
+            askButton.disabled = true;
+            askButton.textContent = '⏳ جاري البحث...';
+            
+            // Add user question to chat
+            addChatMessage('user', question);
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/ask`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        question: question,
+                        contract_text: currentContractText,
+                        user_id: currentUserId,
+                        session_id: currentSessionId
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Parse agent response
+                    let agentAnswer;
+                    try {
+                        // Handle the new clean response format from Lambda
+                        if (result.result && typeof result.result === 'object') {
+                            // Check if it has content field
+                            if (result.result.content) {
+                                agentAnswer = result.result.content;
+                            } else {
+                                // Format structured response nicely
+                                agentAnswer = formatChatResponse(result.result);
+                            }
+                        } else if (result.result && typeof result.result === 'string') {
+                            agentAnswer = result.result;
+                        } else {
+                            agentAnswer = 'لم أستطع فهم السؤال، يرجى إعادة صياغته.';
+                        }
+                    } catch (parseError) {
+                        console.error('Parse error:', parseError);
+                        agentAnswer = 'حدث خطأ في معالجة الإجابة.';
+                    }
+                    
+                    addChatMessage('agent', agentAnswer);
+                } else {
+                    addChatMessage('agent', `خطأ: ${result.error || 'لم أستطع الإجابة على السؤال'}`);
+                }
+                
+            } catch (error) {
+                addChatMessage('agent', `خطأ في الاتصال: ${error.message}`);
+            } finally {
+                askButton.disabled = false;
+                askButton.textContent = '❓ اسأل';
+            }
+        }
+        
+        // Format chat response from JSON to readable Arabic text
+        function formatChatResponse(data) {
+            let formattedText = '';
+            
+            // Handle contract benefits
+            if (data.contract_benefits) {
+                formattedText += '🎯 **فوائد هذا العقد:**\n\n';
+                
+                if (data.contract_benefits.legal_protection) {
+                    formattedText += '⚖️ **الحماية القانونية:**\n';
+                    data.contract_benefits.legal_protection.forEach(item => {
+                        formattedText += `• ${item}\n`;
+                    });
+                    formattedText += '\n';
+                }
+                
+                if (data.contract_benefits.financial_clarity) {
+                    formattedText += '💰 **الوضوح المالي:**\n';
+                    data.contract_benefits.financial_clarity.forEach(item => {
+                        formattedText += `• ${item}\n`;
+                    });
+                    formattedText += '\n';
+                }
+                
+                if (data.contract_benefits.dispute_prevention) {
+                    formattedText += '🛡️ **منع النزاعات:**\n';
+                    data.contract_benefits.dispute_prevention.forEach(item => {
+                        formattedText += `• ${item}\n`;
+                    });
+                    formattedText += '\n';
+                }
+                
+                if (data.contract_benefits.legal_reference) {
+                    formattedText += '📋 **المرجعية القانونية:**\n';
+                    data.contract_benefits.legal_reference.forEach(item => {
+                        formattedText += `• ${item}\n`;
+                    });
+                    formattedText += '\n';
+                }
+                
+                if (data.contract_benefits.ownership_transfer) {
+                    formattedText += '🔄 **نقل الملكية:**\n';
+                    data.contract_benefits.ownership_transfer.forEach(item => {
+                        formattedText += `• ${item}\n`;
+                    });
+                    formattedText += '\n';
+                }
+                
+                if (data.contract_benefits.practical_benefits) {
+                    formattedText += '✅ **الفوائد العملية:**\n';
+                    data.contract_benefits.practical_benefits.forEach(item => {
+                        formattedText += `• ${item}\n`;
+                    });
+                    formattedText += '\n';
+                }
+            }
+            
+            // Handle recommendations
+            if (data.recommendations) {
+                formattedText += '💡 **التوصيات:**\n';
+                data.recommendations.forEach(item => {
+                    formattedText += `• ${item}\n`;
+                });
+                formattedText += '\n';
+            }
+            
+            // Handle contract importance
+            if (data.contract_importance) {
+                formattedText += '⭐ **أهمية العقد:**\n';
+                Object.entries(data.contract_importance).forEach(([key, value]) => {
+                    const arabicKey = key === 'legal_aspects' ? 'الجوانب القانونية' :
+                                     key === 'protection' ? 'الحماية' :
+                                     key === 'clarity' ? 'الوضوح' : key;
+                    formattedText += `• **${arabicKey}:** ${value}\n`;
+                });
+            }
+            
+            // If no specific structure found, try to format general content
+            if (!formattedText) {
+                if (typeof data === 'string') {
+                    return data;
+                } else if (data.content) {
+                    return data.content;
+                } else {
+                    // General JSON formatting
+                    formattedText = 'الإجابة:\n\n';
+                    Object.entries(data).forEach(([key, value]) => {
+                        if (Array.isArray(value)) {
+                            formattedText += `**${key}:**\n`;
+                            value.forEach(item => formattedText += `• ${item}\n`);
+                            formattedText += '\n';
+                        } else if (typeof value === 'object') {
+                            formattedText += `**${key}:**\n`;
+                            Object.entries(value).forEach(([subKey, subValue]) => {
+                                formattedText += `  - ${subKey}: ${subValue}\n`;
+                            });
+                            formattedText += '\n';
+                        } else {
+                            formattedText += `**${key}:** ${value}\n\n`;
+                        }
+                    });
+                }
+            }
+            
+            return formattedText || 'تم استلام الإجابة ولكن لا يمكن عرضها بشكل صحيح.';
+        }
+        
+        function addChatMessage(sender, message) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `mb-3 ${sender === 'user' ? 'text-right' : 'text-left'}`;
+            
+            if (sender === 'user') {
+                messageDiv.innerHTML = `
+                    <div class="inline-block bg-blue-600 text-white p-3 rounded-lg max-w-xs">
+                        <strong>أنت:</strong> ${message}
+                    </div>
+                `;
+            } else {
+                // Format the message for better display
+                const formattedMessage = message
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold text
+                    .replace(/\n/g, '<br>') // Line breaks
+                    .replace(/•/g, '•'); // Ensure bullet points display
+                
+                messageDiv.innerHTML = `
+                    <div class="inline-block bg-gray-200 text-gray-800 p-3 rounded-lg max-w-lg" style="white-space: pre-line;">
+                        <strong>🤖 الوكيل:</strong><br>${formattedMessage}
+                    </div>
+                `;
+            }
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Remove the placeholder message if it exists
+            const placeholder = chatMessages.querySelector('.text-center.text-gray-500');
+            if (placeholder) {
+                placeholder.remove();
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Make status check non-blocking and run asynchronously
+            setTimeout(() => {
+                checkSystemStatus();
+            }, 100);
+        });
+    </script>
+</body>
+</html>

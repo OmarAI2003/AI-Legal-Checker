@@ -1,0 +1,234 @@
+default_agent: kbenhancedrecommendation
+agents:
+  egyptianlegalexplanation:
+    name: egyptianlegalexplanation
+    entrypoint: strands_explanation_agent.py
+    platform: linux/arm64
+    container_runtime: none
+    aws:
+      execution_role: arn:aws:iam::273667282126:role/service-role/egyptianlegal-agentcore-execution-role
+      execution_role_auto_create: true
+      account: '273667282126'
+      region: us-west-2
+      ecr_repository: 273667282126.dkr.ecr.us-west-2.amazonaws.com/bedrock-agentcore-egyptianlegalexplanation
+      ecr_auto_create: false
+      network_configuration:
+        network_mode: PUBLIC
+      protocol_configuration:
+        server_protocol: HTTP
+      observability:
+        enabled: true
+    bedrock_agentcore:
+      agent_id: egyptianlegalexplanation-4YM1XhHNns
+      agent_arn: arn:aws:bedrock-agentcore:us-west-2:273667282126:runtime/egyptianlegalexplanation-4YM1XhHNns
+      agent_session_id: e0afc964-0c82-41a6-97dc-0de7efe499d2
+    codebuild:
+      project_name: bedrock-agentcore-egyptianlegalexplanation-builder
+      execution_role: arn:aws:iam::273667282126:role/AmazonBedrockAgentCoreSDKCodeBuild-us-west-2-fa96b2ad53
+      source_bucket: bedrock-agentcore-codebuild-sources-273667282126-us-west-2
+    authorizer_configuration: null
+    request_header_configuration: null
+    oauth_configuration: null
+  egyptianlegalassessment:
+    name: egyptianlegalassessment
+    entrypoint: strands_assessment_agent.py
+    platform: linux/arm64
+    container_runtime: none
+    aws:
+      execution_role: arn:aws:iam::273667282126:role/AmazonBedrockAgentCoreSDKRuntime-us-west-2-3df674d0c4
+      execution_role_auto_create: false
+      account: '273667282126'
+      region: us-west-2
+      ecr_repository: 273667282126.dkr.ecr.us-west-2.amazonaws.com/bedrock-agentcore-egyptianlegalassessment
+      ecr_auto_create: false
+      network_configuration:
+        network_mode: PUBLIC
+      protocol_configuration:
+        server_protocol: HTTP
+      observability:
+        enabled: true
+    bedrock_agentcore:
+      agent_id: egyptianlegalassessment-Ec4JMa4jvx
+      agent_arn: arn:aws:bedrock-agentcore:us-west-2:273667282126:runtime/egyptianlegalassessment-Ec4JMa4jvx
+      agent_session_id: d4c1132a-4f3d-459b-b4b0-56858fde314c
+    codebuild:
+      project_name: bedrock-agentcore-egyptianlegalassessment-builder
+      execution_role: arn:aws:iam::273667282126:role/AmazonBedrockAgentCoreSDKCodeBuild-us-west-2-3df674d0c4
+      source_bucket: bedrock-agentcore-codebuild-sources-273667282126-us-west-2
+    authorizer_configuration: null
+    request_header_configuration: null
+    oauth_configuration: null
+  egyptianlegalrecommendation:
+    name: egyptianlegalrecommendation
+    entrypoint: strands_recommendation_agent.py
+    platform: linux/arm64
+    container_runtime: none
+    aws:
+      execution_role: arn:aws:iam::273667282126:role/AmazonBedrockAgentCoreSDKRuntime-us-west-2-8e883145c0
+      execution_role_auto_create: false
+      account: '273667282126'
+      region: us-west-2
+      ecr_repository: 273667282126.dkr.ecr.us-west-2.amazonaws.com/bedrock-agentcore-egyptianlegalrecommendation
+      ecr_auto_create: false
+      network_configuration:
+        network_mode: PUBLIC
+      protocol_configuration:
+        server_protocol: HTTP
+      observability:
+        enabled: true
+    bedrock_agentcore:
+      agent_id: egyptianlegalrecommendation-X5t40tG8jN
+      agent_arn: arn:aws:bedrock-agentcore:us-west-2:273667282126:runtime/egyptianlegalrecommendation-X5t40tG8jN
+      agent_session_id: 4da8e161-8ceb-4c0b-909b-ae707ce08d66
+    codebuild:
+      project_name: bedrock-agentcore-egyptianlegalrecommendation-builder
+      execution_role: arn:aws:iam::273667282126:role/AmazonBedrockAgentCoreSDKCodeBuild-us-west-2-8e883145c0
+      source_bucket: bedrock-agentcore-codebuild-sources-273667282126-us-west-2
+    authorizer_configuration: null
+    request_header_configuration: null
+    oauth_configuration: null
+  memoryenhancedexplanation:
+    name: memoryenhancedexplanation
+    entrypoint: memory_enhanced_explanation_agent.py
+    platform: linux/arm64
+    container_runtime: none
+    aws:
+      execution_role: arn:aws:iam::273667282126:role/AmazonBedrockAgentCoreSDKRuntime-us-west-2-eee8ffc36f
+      execution_role_auto_create: false
+      account: '273667282126'
+      region: us-west-2
+      ecr_repository: 273667282126.dkr.ecr.us-west-2.amazonaws.com/bedrock-agentcore-memoryenhancedexplanation
+      ecr_auto_create: false
+      network_configuration:
+        network_mode: PUBLIC
+      protocol_configuration:
+        server_protocol: HTTP
+      observability:
+        enabled: true
+    bedrock_agentcore:
+      agent_id: memoryenhancedexplanation-L1S4nKChZB
+      agent_arn: arn:aws:bedrock-agentcore:us-west-2:273667282126:runtime/memoryenhancedexplanation-L1S4nKChZB
+      agent_session_id: ea1fa8cb-110b-44e2-a793-511a6d113690
+    codebuild:
+      project_name: bedrock-agentcore-memoryenhancedexplanation-builder
+      execution_role: arn:aws:iam::273667282126:role/AmazonBedrockAgentCoreSDKCodeBuild-us-west-2-eee8ffc36f
+      source_bucket: bedrock-agentcore-codebuild-sources-273667282126-us-west-2
+    authorizer_configuration: null
+    request_header_configuration: null
+    oauth_configuration: null
+  memoryenhancedassessment:
+    name: memoryenhancedassessment
+    entrypoint: memory_enhanced_assessment_agent.py
+    platform: linux/arm64
+    container_runtime: none
+    aws:
+      execution_role: arn:aws:iam::273667282126:role/AmazonBedrockAgentCoreSDKRuntime-us-west-2-e84cf4ae1b
+      execution_role_auto_create: false
+      account: '273667282126'
+      region: us-west-2
+      ecr_repository: 273667282126.dkr.ecr.us-west-2.amazonaws.com/bedrock-agentcore-memoryenhancedassessment
+      ecr_auto_create: false
+      network_configuration:
+        network_mode: PUBLIC
+      protocol_configuration:
+        server_protocol: HTTP
+      observability:
+        enabled: true
+    bedrock_agentcore:
+      agent_id: memoryenhancedassessment-JAX5fj2gv1
+      agent_arn: arn:aws:bedrock-agentcore:us-west-2:273667282126:runtime/memoryenhancedassessment-JAX5fj2gv1
+      agent_session_id: db60b839-9d1e-40f2-82a8-d5f26184035c
+    codebuild:
+      project_name: bedrock-agentcore-memoryenhancedassessment-builder
+      execution_role: arn:aws:iam::273667282126:role/AmazonBedrockAgentCoreSDKCodeBuild-us-west-2-e84cf4ae1b
+      source_bucket: bedrock-agentcore-codebuild-sources-273667282126-us-west-2
+    authorizer_configuration: null
+    request_header_configuration: null
+    oauth_configuration: null
+  memoryenhancedrecommendation:
+    name: memoryenhancedrecommendation
+    entrypoint: memory_enhanced_recommendation_agent.py
+    platform: linux/arm64
+    container_runtime: none
+    aws:
+      execution_role: arn:aws:iam::273667282126:role/AmazonBedrockAgentCoreSDKRuntime-us-west-2-e968b3f712
+      execution_role_auto_create: false
+      account: '273667282126'
+      region: us-west-2
+      ecr_repository: 273667282126.dkr.ecr.us-west-2.amazonaws.com/bedrock-agentcore-memoryenhancedrecommendation
+      ecr_auto_create: false
+      network_configuration:
+        network_mode: PUBLIC
+      protocol_configuration:
+        server_protocol: HTTP
+      observability:
+        enabled: true
+    bedrock_agentcore:
+      agent_id: memoryenhancedrecommendation-mxDfMs3dLw
+      agent_arn: arn:aws:bedrock-agentcore:us-west-2:273667282126:runtime/memoryenhancedrecommendation-mxDfMs3dLw
+      agent_session_id: 5c31fb99-bab3-4423-bf2e-d3691a8f2e13
+    codebuild:
+      project_name: bedrock-agentcore-memoryenhancedrecommendation-builder
+      execution_role: arn:aws:iam::273667282126:role/AmazonBedrockAgentCoreSDKCodeBuild-us-west-2-e968b3f712
+      source_bucket: bedrock-agentcore-codebuild-sources-273667282126-us-west-2
+    authorizer_configuration: null
+    request_header_configuration: null
+    oauth_configuration: null
+  kbenhancedassessment:
+    name: kbenhancedassessment
+    entrypoint: knowledge_base_enhanced_assessment_agent.py
+    platform: linux/arm64
+    container_runtime: none
+    aws:
+      execution_role: arn:aws:iam::273667282126:role/AmazonBedrockAgentCoreSDKRuntime-us-west-2-e84cf4ae1b
+      execution_role_auto_create: true
+      account: '273667282126'
+      region: us-west-2
+      ecr_repository: 273667282126.dkr.ecr.us-west-2.amazonaws.com/bedrock-agentcore-kbenhancedassessment
+      ecr_auto_create: false
+      network_configuration:
+        network_mode: PUBLIC
+      protocol_configuration:
+        server_protocol: HTTP
+      observability:
+        enabled: true
+    bedrock_agentcore:
+      agent_id: kbenhancedassessment-3hDo9UFYJ7
+      agent_arn: arn:aws:bedrock-agentcore:us-west-2:273667282126:runtime/kbenhancedassessment-3hDo9UFYJ7
+      agent_session_id: fb262bb7-8ba6-455b-a375-85a1c4f798a1
+    codebuild:
+      project_name: bedrock-agentcore-kbenhancedassessment-builder
+      execution_role: arn:aws:iam::273667282126:role/AmazonBedrockAgentCoreSDKCodeBuild-us-west-2-3d30e01c97
+      source_bucket: bedrock-agentcore-codebuild-sources-273667282126-us-west-2
+    authorizer_configuration: null
+    request_header_configuration: null
+    oauth_configuration: null
+  kbenhancedrecommendation:
+    name: kbenhancedrecommendation
+    entrypoint: knowledge_base_enhanced_recommendation_agent.py
+    platform: linux/arm64
+    container_runtime: none
+    aws:
+      execution_role: arn:aws:iam::273667282126:role/AmazonBedrockAgentCoreSDKRuntime-us-west-2-e84cf4ae1b
+      execution_role_auto_create: true
+      account: '273667282126'
+      region: us-west-2
+      ecr_repository: 273667282126.dkr.ecr.us-west-2.amazonaws.com/bedrock-agentcore-kbenhancedrecommendation
+      ecr_auto_create: false
+      network_configuration:
+        network_mode: PUBLIC
+      protocol_configuration:
+        server_protocol: HTTP
+      observability:
+        enabled: true
+    bedrock_agentcore:
+      agent_id: kbenhancedrecommendation-herjTIBzG0
+      agent_arn: arn:aws:bedrock-agentcore:us-west-2:273667282126:runtime/kbenhancedrecommendation-herjTIBzG0
+      agent_session_id: 41d394c7-8cdb-4d18-9861-a4fb0c358efc
+    codebuild:
+      project_name: bedrock-agentcore-kbenhancedrecommendation-builder
+      execution_role: arn:aws:iam::273667282126:role/AmazonBedrockAgentCoreSDKCodeBuild-us-west-2-3c90c245a8
+      source_bucket: bedrock-agentcore-codebuild-sources-273667282126-us-west-2
+    authorizer_configuration: null
+    request_header_configuration: null
+    oauth_configuration: null

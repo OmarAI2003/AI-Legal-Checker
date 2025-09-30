@@ -234,7 +234,7 @@ Our system includes a list of comprehensive knowledge (for testing):
 
 ##  Live Demo [`⇧`](#contents)
 
-- **Website**: https://egyptian-legal-analysis-ui.s3.amazonaws.com/production_website_aws.html
+- **Website**: http://egyptian-legal-analysis-ui.s3-website-us-west-2.amazonaws.com/
 - **API Base URL**: https://820uxym01d.execute-api.us-west-2.amazonaws.com/prod
 
 ## Usage Examples [`⇧`](#contents)

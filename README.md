@@ -1,16 +1,28 @@
 # 🏛️ Egyptian Legal Contract Analyzer - Tawtheeq AI
-
-> **A comprehensive AWS-powered system for analyzing Egyptian legal contracts using AI and multi-agent architecture**
-
 [![AWS](https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://aws.amazon.com/)
 [![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org/)
 [![Bedrock](https://img.shields.io/badge/Amazon_Bedrock-FF9900?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://aws.amazon.com/bedrock/)
 
-## 🎯 Project Overview
+
+<a id=""></a>
+
+## **Contents**
+
+- [Overview `⇧`](#overview-)
+- [Key Features `⇧`](#key-features-)
+- [Architecture `⇧`](#architecture-)
+- [Deployment `⇧`](#deployment-)
+- [Environment setup `⇧`](#environment-setup-)
+- [Use Cases `⇧`](#use-cases-)
+
+<a id="conventions-"></a>
+
+
+## 🎯 Overview [`⇧`](#contents)
 
 An advanced AI-powered system that analyzes Egyptian legal contracts using AWS services. It provides comprehensive legal analysis, compliance checking, and risk assessment for Arabic legal documents.
 
-## 🏗️ Architecture Overview
+## 🏗️ Architecture [`⇧`](#contents)
 
 ![Architecture Diagram](architecture_diagram.png)
 
@@ -22,9 +34,8 @@ An advanced AI-powered system that analyzes Egyptian legal contracts using AWS s
 - **OCR Service**: Separate Lambda function for image-to-text conversion using Claude Vision
 - **Knowledge Base**: RAG-enhanced system with Egyptian legal document corpus
 
-## 🌟 Key Features
+## 🌟Features [`⇧`](#contents)
 
-### ✅ Implemented Features
 
 1. **🔍 Advanced Arabic OCR**: High-accuracy text extraction from contract images
 2. **🤖 Multi-Agent Analysis**: Specialized AI agents for different legal aspects
@@ -37,7 +48,7 @@ An advanced AI-powered system that analyzes Egyptian legal contracts using AWS s
 - **Assessment Mode**: Risk assessment and legal recommendations
 - **Interactive Chat**: Follow-up questions with session-based conversation memory
 
-## 🚀 Quick Start
+## 🚀 Quick Start [`⇧`](#contents)
 
 ### Prerequisites
 - AWS Account with appropriate permissions
@@ -109,7 +120,7 @@ Create API Gateway with the following endpoints:
 
 Enable CORS for all endpoints.
 
-## 🔧 Configuration
+##  Configuration [`⇧`](#contents)
 
 ### Required IAM Permissions
 The Lambda execution role needs permissions for:
@@ -128,30 +139,7 @@ Update these in `deployment/lambda_function.py`:
 - Explanation Agent: `arn:aws:bedrock-agentcore:us-west-2:YOUR-ACCOUNT:runtime/memoryenhancedexplanation-XXXXX`
 - Assessment Agent: `arn:aws:bedrock-agentcore:us-west-2:YOUR-ACCOUNT:runtime/memoryenhancedassessment-XXXXX`
 
-## 📁 Project Structure
-
-```
-egyptian-legal-contract-analysis/
-├── README.md                          # This file
-├── requirements.txt                   # Python dependencies
-├── production_website_aws.html        # Main website
-├── lambda-trust-policy.json          # IAM trust policy
-├── .bedrock_agentcore.yaml           # AgentCore configuration
-├── architecture_diagram.png          # System architecture diagram
-├── agents/                           # Agent configurations
-│   ├── contract_explanation_agent.py
-│   ├── contract_assessment_agent.py
-│   └── contract_assessment_agent_rag.py
-├── deployment/                       # Lambda deployment files
-│   ├── lambda_function.py           # Main API Lambda
-│   └── ocr_processor.py             # OCR processing Lambda
-├── setup_aws_infrastructure.py      # Infrastructure setup
-├── knowledge_base_manager.py        # Knowledge base management
-├── create_simple_rag_agent.py      # RAG agent creation
-└── deploy_agents.py                # Agent deployment
-```
-
-## 📊 API Documentation
+##  API Documentation [`⇧`](#contents)
 
 ### Health Check
 ```http
@@ -196,7 +184,7 @@ Content-Type: application/json
 }
 ```
 
-## 🏛️ Egyptian Law Knowledge Base
+##  Egyptian Law Knowledge Base [`⇧`](#contents)
 
 Our system includes a list of comprehensive knowledge (for testing):
 - **قانون العمل رقم 12 لسنة 2003** (Labor Law No. 12/2003)
@@ -205,12 +193,12 @@ Our system includes a list of comprehensive knowledge (for testing):
 - **القوانين التجارية** (Commercial Laws)
 - **السوابق القضائية** (Legal Precedents)
 
-## 🌐 Live Demo
+##  Live Demo [`⇧`](#contents)
 
 - **Website**: https://egyptian-legal-analysis-ui.s3.amazonaws.com/production_website_aws.html
 - **API Base URL**: https://820uxym01d.execute-api.us-west-2.amazonaws.com/prod
 
-## 📝 Usage Examples
+## Usage Examples [`⇧`](#contents)
 
 ### 1. Contract Upload and Analysis
 1. Visit the website
@@ -229,7 +217,7 @@ Our system includes a list of comprehensive knowledge (for testing):
 3. Get extracted Arabic text
 4. Optionally run automatic analysis
 
-## 🔍 Monitoring and Debugging
+##  Monitoring and Debugging [`⇧`](#contents)
 
 ### CloudWatch Logs
 Monitor the following log groups:
@@ -242,82 +230,126 @@ Monitor the following log groups:
 3. **CORS Errors**: Ensure proper API Gateway CORS configuration
 4. **Memory Issues**: Increase Lambda memory allocation
 
-## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests for new functionality
-5. Submit a pull request
+# Environment setup [`⇧`](#contents)
 
-## 📄 License
+1. First and foremost, please see the suggested IDE setup in the dropdown below to make sure that your editor is ready for development.
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+> [!IMPORTANT]
+>
+> <details><summary>Suggested IDE setup</summary>
+>
+> <p>
+>
+> VS Code
+>
+> Install the following extensions:
+>
+> - [charliermarsh.ruff](https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff)
+> - [streetsidesoftware.code-spell-checker](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
+>
+> </p>
+> </details>
 
----
+1. [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) the [AI-Legal-Checker repo](https://github.com/activist-org/AI-Legal-Checker), clone your fork, and configure the remotes:
 
-Built with ❤️ using AWS Bedrock AgentCore and Claude AI
+> [!NOTE]
+>
+> <details><summary>Consider using SSH</summary>
+>
+> <p>
+>
+> Alternatively to using HTTPS as in the instructions below, consider SSH to interact with GitHub from the terminal. SSH allows you to connect without a user-pass authentication flow.
+>
+> To run git commands with SSH, remember then to substitute the HTTPS URL, `https://github.com/...`, with the SSH one, `git@github.com:...`.
+>
+> - e.g. Cloning now becomes `git clone git@github.com:<your-username>/AI-Legal-Checker.git`
+>
+> GitHub also has their documentation on how to [Generate a new SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) 🔑
+>
+> </p>
+> </details>
+
+```bash
+# Clone your fork of the repo into the current directory.
+git clone https://github.com/<your-username>/AI-Legal-Checker
+# Navigate to the newly cloned directory.
+cd AI-Legal-Checker
+# Assign the original repo to a remote called "upstream".
+git remote add upstream https://github.com/activist-org/AI-Legal-Checker
+```
+
+- Now, if you run `git remote -v` you should see two remote repositories named:
+  - `origin` (forked repository)
+  - `upstream` (AI-Legal-Checker repository)
+
+3. Create a virtual environment, activate it and install dependencies:
+
+   ```bash
+   # Unix or MacOS:
+   python3 -m venv venv
+   source venv/bin/activate
+
+   # Windows:
+   python -m venv venv
+   venv\Scripts\activate.bat
+
+   # After activating venv:
+   pip install --upgrade pip
+   pip install -r requirements-dev.txt
+
+   # To install the AI-Legal-Checker for local development:
+   pip install -e .
+   ```
+
+You're now ready to work on `AI-Legal-Checker`!
 
 
 
-## 📝 Usage Examples# Prepare your legal documents for Knowledge Base
-
-legal_documents = [
-
-### 1. Contract Upload and Analysis    "egyptian-labor-law-12-2003.pdf",
-
-1. Visit the website    "civil-code-provisions.pdf", 
-
-2. Select analysis type (Explanation or Assessment)    "contract-templates.pdf",
-
-3. Upload contract image or paste text    "legal-precedents.pdf"
-
-4. Click "تحليل العقد" to get AI-powered analysis]
+## 📝 Usage Examples#
 
 
+**Option 1. Contract Upload and Analysis.**
 
-### 2. Interactive Q&A# Create Knowledge Base with proper chunking for Arabic
+1. Visit the website
 
-1. After analysis, ask follow-up questionskb_config = {
+2. Select analysis type (Explanation or Assessment)
 
-2. Get detailed responses based on contract content    "name": "QanuniEgyptianLawKB",
+3. Upload contract image or paste text
 
-3. Continue conversation with context preservation    "description": "Egyptian legal documents and precedents",
+4. Click "تحليل العقد" to get AI-powered analysis
 
-    "dataSourceConfiguration": {
 
-### 3. OCR Text Extraction        "type": "S3",
+
+**Option 2. Interactive Q&A#**
+
+1. After analysis, ask follow-up questions
+
+2. Get detailed responses based on contract content
+
+3. Continue conversation with context preservation
+### 3. OCR Text Extraction
 
 1. Upload contract image        "s3Configuration": {
 
-2. Click "استخراج النص ومعالجته"            "bucketArn": "arn:aws:s3:::qanuni-legal-docs"
+2. Click "استخراج النص ومعالجته"
 
-3. Get extracted Arabic text        }
+3. Get extracted Arabic text
 
-4. Optionally run automatic analysis    },
+4. Optionally run automatic analysis
 
-    "vectorIngestionConfiguration": {
+## 🤝 Contributing
 
-## 🤝 Contributing        "chunkingConfiguration": {
+1. Fork the repository
 
-            "chunkingStrategy": "FIXED_SIZE",
+2. Create a feature branch
 
-1. Fork the repository            "fixedSizeChunkingConfiguration": {
+3. Make your changes
 
-2. Create a feature branch                "maxTokens": 300,  # Smaller chunks work better for Arabic
+4. Add tests for new functionality
 
-3. Make your changes                "overlapPercentage": 20
+5. Submit a pull request
 
-4. Add tests for new functionality            }
-
-5. Submit a pull request        }
-
-    }
-
-## 📄 License}
-
-
-This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## 🆘 Support
 
@@ -344,6 +376,48 @@ Image Upload → OCR Processor → Claude Vision → Arabic Text → Optional An
 User Question → AgentCore (with memory) → RAG Enhancement → Contextual Response
 ```
 
----
 
-Built with ❤️ using AWS Bedrock AgentCore and Claude AI
+## 📁 Project Structure
+
+```
+egyptian-legal-contract-analysis/
+├── README.md                          # This file
+├── requirements.txt                   # Python dependencies
+├── production_website_aws.html        # Main website
+├── lambda-trust-policy.json          # IAM trust policy
+├── .bedrock_agentcore.yaml           # AgentCore configuration
+├── architecture_diagram.png          # System architecture diagram
+├── agents/                           # Agent configurations
+│   ├── contract_explanation_agent.py
+│   ├── contract_assessment_agent.py
+│   └── contract_assessment_agent_rag.py
+├── deployment/                       # Lambda deployment files
+│   ├── lambda_function.py           # Main API Lambda
+│   └── ocr_processor.py             # OCR processing Lambda
+├── setup_aws_infrastructure.py      # Infrastructure setup
+├── knowledge_base_manager.py        # Knowledge base management
+├── create_simple_rag_agent.py      # RAG agent creation
+└── deploy_agents.py                # Agent deployment
+```
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+
+# Contributors [`⇧`](#contents)
+
+Thanks to all our amazing contributors! ❤️
+
+<a href="https://github.com/mustafatawfiq">
+  <img src="https://avatars.githubusercontent.com/mustafatawfiq" width="50" height="50" style="border-radius:50%" />
+</a>
+<a href="https://github.com/lola-16">
+  <img src="https://avatars.githubusercontent.com/lola-16" width="50" height="50" style="border-radius:50%" />
+</a>
+<a href="https://github.com/mennamohammeddd">
+  <img src="https://avatars.githubusercontent.com/mennamohammeddd" width="50" height="50" style="border-radius:50%" />
+</a>
+<a href="https://github.com/OmarAI2003">
+  <img src="https://avatars.githubusercontent.com/OmarAI2003" width="50" height="50" style="border-radius:50%" />
+</a>

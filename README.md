@@ -30,7 +30,8 @@ An advanced AI-powered system that analyzes Egyptian legal contracts using AWS s
 3. **⚖️ Egyptian Law Compliance**: Automated checking against Egyptian legal requirements
 4. **🌐 Bilingual Support**: Analysis and reports in both Arabic and English
 5. **⚡ Real-time Processing**: Fast analysis with cloud-native architecture
-![Architecture Diagram](ui.png)
+6. 
+![UI](ui.png)
 
 
 ## 🏗️ Architecture [`⇧`](#contents)

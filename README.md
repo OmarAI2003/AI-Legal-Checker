@@ -8,21 +8,22 @@
 
 ## **Contents**
 
-- [Overview `⇧`](#overview-)
-- [Features `⇧`](#key-features-)
-- [Architecture `⇧`](#architecture-)
-- [Deployment `⇧`](#deployment-)
-- [Environment setup `⇧`](#environment-setup-)
-- [Use Cases `⇧`](#use-cases-)
+- [🎯 Overview `⇧`](#overview-)
+- [🌟 Features `⇧`](#features-)
+- [🏗️ Architecture `⇧`](#architecture-)
+- [🛠️ Environment setup `⇧`](#environment-setup-)
+- [🧩 Project Structure `⇧`](#project-structure-)
+- [👥 Contributors `⇧`](#contributors-)
 
-<a id="conventions-"></a>
+<a id="overview"></a>
 
 
-## 🎯 Overview [`⇧`](#contents)
+# 🎯 Overview [`⇧`](#contents)
 
 An advanced AI-powered system that analyzes Egyptian legal contracts using AWS services. It provides comprehensive legal analysis, compliance checking, and risk assessment for Arabic legal documents.
 
-## 🌟Features [`⇧`](#contents)
+<a id="features"></a>
+# 🌟Features [`⇧`](#contents)
 
 
 1. **🔍 Advanced Arabic OCR**: High-accuracy text extraction from contract images
@@ -33,8 +34,9 @@ An advanced AI-powered system that analyzes Egyptian legal contracts using AWS s
    
 ![UI](ui.png)
 
+<a id="architecture"></a>
 
-## 🏗️ Architecture [`⇧`](#contents)
+# 🏗️ Architecture [`⇧`](#contents)
 
 ![Architecture Diagram](architecture.png)
 
@@ -270,6 +272,8 @@ Monitor the following log groups:
 4. **Memory Issues**: Increase Lambda memory allocation
 
 
+<a id="environment-setup"></a>
+
 # Environment setup [`⇧`](#contents)
 
 1. First and foremost, please see the suggested IDE setup in the dropdown below to make sure that your editor is ready for development.
@@ -415,8 +419,9 @@ Image Upload → OCR Processor → Claude Vision → Arabic Text → Optional An
 User Question → AgentCore (with memory) → RAG Enhancement → Contextual Response
 ```
 
+<a id="project-structure-"></a>
 
-## 📁 Project Structure
+# 📁 Project Structure
 
 ```
 egyptian-legal-contract-analysis/
